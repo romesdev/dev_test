@@ -3,7 +3,7 @@ import { z, ZodError } from 'zod';
 import {
   BAD_REQUEST_STATUS_CODE,
   INTERNAL_SERVER_ERROR_STATUS_CODE,
-} from '../utils';
+} from '../utils/constants';
 
 export function validateData(schema: z.ZodObject<any, any>) {
   return (req: Request, res: Response, next: NextFunction) => {
