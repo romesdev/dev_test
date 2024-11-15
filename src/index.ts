@@ -3,6 +3,14 @@ import express from 'express';
 import { DataSource } from 'typeorm';
 import { User } from './entity/User';
 import { Post } from './entity/Post';
+import {
+  BAD_REQUEST_STATUS_CODE,
+  CREATED_STATUS_CODE,
+  INTERNAL_SERVER_ERROR_STATUS_CODE,
+} from './utils';
+import { userRegistrationSchema } from './schemas/userSchemas';
+import { validateData } from './middleware/validationMiddleware';
+import { postRegistrationSchema } from './schemas/postSchema';
 
 const app = express();
 app.use(express.json());
@@ -38,7 +46,7 @@ app.get('/', async (_, res) => {
   res.send('hello world');
 });
 
-app.post('/users', async (req, res) => {
+app.post('/users', validateData(userRegistrationSchema), async (req, res) => {
   const { firstName, lastName, email } = req.body;
 
   try {
@@ -50,20 +58,25 @@ app.post('/users', async (req, res) => {
 
     await AppDataSource.manager.save(user);
 
-    res.status(201).json(user);
+    res.status(CREATED_STATUS_CODE).json(user);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Internal server error' });
+    res
+      .status(INTERNAL_SERVER_ERROR_STATUS_CODE)
+      .json({ error: 'Internal server error' });
   }
 });
 
-app.post('/posts', async (req, res) => {
+app.post('/posts', validateData(postRegistrationSchema), async (req, res) => {
   const { title, description, userId } = req.body;
 
   try {
     const user = await AppDataSource.manager.findOneBy(User, { id: userId });
 
-    if (!user) return res.status(400).json({ error: 'User not exists' });
+    if (!user)
+      return res
+        .status(BAD_REQUEST_STATUS_CODE)
+        .json({ error: 'User not exists' });
 
     const post = new Post();
 
@@ -73,10 +86,12 @@ app.post('/posts', async (req, res) => {
 
     await AppDataSource.manager.save(post);
 
-    return res.status(201).json(post);
+    return res.status(CREATED_STATUS_CODE).json(post);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Internal server error' });
+    res
+      .status(INTERNAL_SERVER_ERROR_STATUS_CODE)
+      .json({ error: 'Internal server error' });
   }
 });
 
