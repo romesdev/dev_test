@@ -1,29 +1,29 @@
-name: Build on Pull Request
+name: 🏗 Build on Pull Request 👨‍🔧
 
 on:
   pull_request:
     branches:
-      - '**' # Monitorar todos os branches para Pull Requests
+      - '**' # Trigger on pull requests for all branches
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      # Step para checar o código do repositório
+      # Step to clone the repository code into the runner
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step para configurar a versão do Node.js (caso o projeto use Node.js)
+      # Step to set up Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16' # Substitua pela versão apropriada
+          node-version: '18' 
 
-      # Step para instalar dependências
+      # Step to install project dependencies
       - name: Install dependencies
         run: npm install
 
-      # Step para buildar o projeto
+      # Step to build the project
       - name: Build project
         run: npm run build
