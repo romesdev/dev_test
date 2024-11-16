@@ -1,14 +1,14 @@
-import { Repository } from 'typeorm';
-import { Post } from '../entity/Post';
-import { User } from '../entity/User';
-import { Result } from '../utils/types';
+import { Repository } from "typeorm";
+import { Post } from "../entity/Post";
+import { User } from "../entity/User";
+import { Result } from "../utils/types";
 
-type PostConstructorProps = {
+export type PostConstructorProps = {
   postRepository: Repository<Post>;
   userRepository: Repository<User>;
 };
 
-type CreatePostDTO = {
+export type CreatePostDTO = {
   title: string;
   description: string;
   userId: number;
@@ -35,8 +35,8 @@ export class PostService {
         return {
           success: false,
           error: {
-            message: 'User not exists',
-            code: 'INVALID_INPUT',
+            message: "User not exists",
+            code: "INVALID_INPUT",
           },
         };
       }
@@ -54,12 +54,12 @@ export class PostService {
         data: savedPost,
       };
     } catch (error) {
-      console.error('Error creating post:', error);
+      console.error("Error creating post:", error);
       return {
         success: false,
         error: {
-          message: 'Internal server error',
-          code: 'SERVER_ERROR',
+          message: "Internal server error",
+          code: "SERVER_ERROR",
         },
       };
     }

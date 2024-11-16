@@ -18,17 +18,14 @@ initializeDatabase();
 const userController = new UserController();
 const postController = new PostController();
 
-app.get("/", async (_, res) => {
-  console.log("hello world!");
-  res.send("hello world");
-});
-
+// /users
 app.post(
   "/users",
   validateData(userRegistrationSchema),
   userController.create.bind(userController),
 );
 
+// /posts
 app.post(
   "/posts",
   validateData(postRegistrationSchema),

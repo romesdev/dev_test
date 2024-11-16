@@ -1,14 +1,14 @@
-import { Repository } from 'typeorm';
-import { User } from '../entity/User';
-import { Result } from '../utils/types';
+import { Repository } from "typeorm";
+import { User } from "../entity/User";
+import { Result } from "../utils/types";
 
-type CreateUserDTO = {
+export type CreateUserDTO = {
   firstName: string;
   lastName: string;
   email: string;
 };
 
-type UserConstructorProps = {
+export type UserConstructorProps = {
   userRepository: Repository<User>;
 };
 export class UserService {
@@ -31,8 +31,8 @@ export class UserService {
         return {
           success: false,
           error: {
-            message: 'Email already registered, should be unique.',
-            code: 'EMAIL_ALREADY_REGISTERED',
+            message: "Email already registered, should be unique.",
+            code: "EMAIL_ALREADY_REGISTERED",
           },
         };
       }
@@ -49,12 +49,12 @@ export class UserService {
         data: savedUser,
       };
     } catch (error) {
-      console.error('Error creating user:', error);
+      console.error("Error creating user:", error);
       return {
         success: false,
         error: {
-          message: 'Internal server error',
-          code: 'SERVER_ERROR',
+          message: "Internal server error",
+          code: "SERVER_ERROR",
         },
       };
     }
