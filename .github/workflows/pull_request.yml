@@ -1,4 +1,4 @@
-name: 🏗 Build on Pull Request 👨‍🔧
+name: 🧪 Build, Lint, and Test on Pull Request 🏗
 
 on:
   pull_request:
@@ -6,9 +6,9 @@ on:
       - '**' # Trigger on pull requests for all branches
 
 jobs:
-  build:
+  lint:
+    name: 🎨 Lint Code 👓
     runs-on: ubuntu-latest
-
     steps:
       # Step to clone the repository code into the runner
       - name: Checkout code
@@ -18,12 +18,56 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18' 
+          node-version: '18'
 
-      # Step to install project dependencies
+      # Step to install dependencies (if required for linting)
+      - name: Install dependencies
+        run: npm install
+
+      # Step to run lint check
+      - name: Run Lint Check
+        run: npx eslint . --ext .ts
+
+  build:
+    name: 🏗 Build Project
+    runs-on: ubuntu-latest
+    steps:
+      # Step to clone the repository code into the runner
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step to set up Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      # Step to install dependencies
       - name: Install dependencies
         run: npm install
 
       # Step to build the project
       - name: Build project
         run: npm run build
+
+  test:
+    name: 🧪 Run Unit Tests 👨‍🔬
+    runs-on: ubuntu-latest
+    steps:
+      # Step to clone the repository code into the runner
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step to set up Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      # Step to install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Step to run unit tests
+      - name: Run Unit Tests
+        run: npm run test:unit
