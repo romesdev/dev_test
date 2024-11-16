@@ -1,0 +1,29 @@
+name: 🏗 Build on Pull Request 👨‍🔧
+
+on:
+  pull_request:
+    branches:
+      - '**' # Trigger on pull requests for all branches
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step to clone the repository code into the runner
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step to set up Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18' 
+
+      # Step to install project dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Step to build the project
+      - name: Build project
+        run: npm run build
